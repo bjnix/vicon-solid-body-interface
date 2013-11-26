@@ -4,9 +4,11 @@ using namespace ViconDataStreamSDK::CPP;
 
 
 
-ViconInputClient::ViconInputClient(const char * hostname)
+ViconInputClient::ViconInputClient(const char * hostname, std::string * SubjectNames, std::string *SegmentNames, unsigned int bodyCount)
 {
+	
 	ViconInputClient::hostname = hostname;
+	ViconAddSolidBody(SubjectNames,SegmentNames,bodyCount);
 	viconInit();
 }
 
@@ -132,6 +134,16 @@ namespace
 	}
 }
 
+ViconSegment * ViconInputClient::ViconAddSolidBody(std::string * SubjectNames, std::string * SegmentName, unsigned int bodyCount);
+{
+	
+	ViconInputClient::
+	for(int bodyIndex = 0; bodyIndex < bodyCount; bodyIndex++ )
+	{
+		solidBodys[bodyIndex]= new ViconSegment(subject_0,segment_0,&MyClient);
+	}
+	return solidBodys;
+}
 
 void ViconInputClient::viconExit()
 {
@@ -221,17 +233,38 @@ void ViconInputClient::viconInit()
 
 void ViconInputClient::viconUpdate()
 {
+	std::string SubjectName;
+	std::string SegmentName;
 	unsigned int SubjectCount;
 	unsigned int SegmentCount;
+	unsigned int SubjectIndex;
+	unsigned int SegmentIndex;
 
 	while(MyClient.GetFrame().Result != Result::Success) 
 	{
 		sleep(1);
 		std::cout(".");
 	}
-
 	SubjectCount = MyClient.GetSubjectCount().SubjectCount;
-    SegmentCount = MyClient.GetSegmentCount( SubjectName ).SegmentCount;
+	for(SubjectIndex = 0; SubjectIndex < SubjectCount; SubjectIndex++ )
+	{
+		SubjectName = MyClient.GetSubjectName( SubjectIndex ).SubjectName;
+	    SegmentCount = MyClient.GetSegmentCount( SubjectName ).SegmentCount;
+
+	    for(SegmentIndex = 0; SegmentIndex < SegmentCount; SegmentIndex)
+		{
+			SegmentName = MyClient.GetSegmentName( SubjectName, SegmentIndex).SegmentName;
+
+			Output_GetSegmentGlobalTranslation _Output_GlobalTranslation = MyClient.GetSegmentGlobalTranslation(SubjectName, SegmentName);
+			Output_GetSegmentGlobalRotationEulerXYZ _Output_GlobalRotationEuler = MyClient.GetSegmentGlobalRotationEulerXYZ(SubjectName, SegmentName);
+			//Output_GetSegmentGlobalRotationHelical _Output_GlobalRotationHelical = MyClient.GetSegmentGlobalRotationHelical(SubjectName, SegmentName);
+			//Output_GetSegmentGlobalRotationMatrix _Output_GlobalRotationMatrix = MyClient.GetSegmentGlobalRotationMatrix(SubjectName, SegmentName);
+			//Output_GetSegmentGlobalRotationQuaternion _Output_GlobalRotationQuaternion = MyClient.GetSegmentGlobalRotationQuaternion(SubjectName, SegmentName);
+			
+
+
+		}
+	}
 
 }
 

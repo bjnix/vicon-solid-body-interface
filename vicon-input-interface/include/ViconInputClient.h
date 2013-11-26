@@ -13,6 +13,9 @@ class ViconInputClient
 	private:
 	const char * hostname;
     void viconInit();
+    unsigned int bodyCount;
+    ViconSegment * solidBodys[bodyCount];
+    
 	
 	public:
 	void viconExit();
