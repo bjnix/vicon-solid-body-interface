@@ -140,7 +140,7 @@ ViconSegment * ViconInputClient::ViconAddSolidBody(std::string * SubjectNames, s
 	ViconInputClient::
 	for(int bodyIndex = 0; bodyIndex < bodyCount; bodyIndex++ )
 	{
-		solidBodys[bodyIndex]= new ViconSegment(subject_0,segment_0,&MyClient);
+		solidBodys.push_back(new ViconSegment(subject_0,segment_0,&MyClient));
 	}
 	return solidBodys;
 }
@@ -246,9 +246,12 @@ void ViconInputClient::viconUpdate()
 		std::cout(".");
 	}
 	SubjectCount = MyClient.GetSubjectCount().SubjectCount;
-	for(SubjectIndex = 0; SubjectIndex < SubjectCount; SubjectIndex++ )
+	/* TODO: bjnix at mtu dot edu | 11.13.2013
+		make sure to change this to accept vector input 
+	*/
+	for(std::vector<ViconSegment>::iterator iter = solidBodys.begin() ; iter != solidBodys.end(); ++iter )
 	{
-		SubjectName = MyClient.GetSubjectName( SubjectIndex ).SubjectName;
+		iter.setTranslation(MyClient.GetSegmentGlobalTranslation(iter.getSubjectName,iter.getSegmentName);
 	    SegmentCount = MyClient.GetSegmentCount( SubjectName ).SegmentCount;
 
 	    for(SegmentIndex = 0; SegmentIndex < SegmentCount; SegmentIndex)

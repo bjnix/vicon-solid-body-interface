@@ -33,10 +33,9 @@ std::string ViconSegment::getSegmentName(){
 return ViconSegment::SegmentName;
 }
 */
-double * ViconSegment::getTranslation()
+double * ViconSegment::setTranslation(Output_GetSegmentGlobalTranslation Output)
 {
     //Number of segments currently represented/tracked by the vicon system
-    Output_GetSegmentGlobalTranslation Output = ViconSegment::SegClient->GetSegmentGlobalTranslation( SubjectName, SegmentName );
     if(!Output.Occluded())
     { 
         X_Y_Z = Output.Translation();
@@ -44,14 +43,14 @@ double * ViconSegment::getTranslation()
     return X_Y_Z;
 }
 
-double * ViconSegment::getOrientationEuler()
+double * ViconSegment::setOrientationEuler(Output_GetSegmentGlobalRotationEulerXYZ Output)
 {
-    Output_GetSegmentGlobalRotationEulerXYZ Output = ViconSegment::SegClient->GetSegmentGlobalRotationEulerXYZ( SubjectName, SegmentName ).Rotation;
     if(!Output.Occluded())
     {
         phi_theta_psi = Output.Rotation();
     }
-    return }
+    return 
+}
 //getter methods for individual components
 double ViconSegment::getX()
 { 
@@ -82,4 +81,12 @@ double ViconSegment::getPsi()
 {
     phi_theta_psi = ViconSegment::getOrientationEuler();
     return phi_theta_psi[2];
+}
+String & getSubjectName()
+{
+    return SubjectName;
+}
+String & getSegmentName()
+{
+    return SegmentName;
 }
