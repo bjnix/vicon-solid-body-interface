@@ -6,15 +6,15 @@
 #include "ViconSegment.h"
 
 
-ViconSegment::ViconSegment(const char * SubjectName,const char * SegmentName,ViconDataStreamSDK::CPP::Client *SegClient)
+ViconSegment::ViconSegment(std::string SubjectName,std::string SegmentName,ViconDataStreamSDK::CPP::Client * segClient)
 {
     ViconSegment::SubjectName = SubjectName;
     ViconSegment::SegmentName = SegmentName;
-    ViconSegment::SegClient = SegClient;
+    ViconSegment::segClient = segClient;
     ViconSegment::X_Y_Z = new double[3];
     ViconSegment::phi_theta_psi = new double[3];
-    ViconSegment::getTranslation();
-    ViconSegment::getOrientationEuler();
+    ViconSegment::setTranslation(segClient->GetSegmentGlobalTranslation(SubjectName,SegmentName));
+    ViconSegment::setOrientationEuler(segClient->GetSegmentGlobalRotationEulerXYZ(SubjectName, SegmentName));
 }
 /*
 ViconSegment::~ViconSegment()
@@ -25,68 +25,60 @@ ViconSegment::~ViconSegment()
 */
 
 
-/*
-std::string ViconSegment::getSubjectName(){
-return ViconSegment::SubjectName;
-}
-std::string ViconSegment::getSegmentName(){
-return ViconSegment::SegmentName;
-}
-*/
-double * ViconSegment::setTranslation(Output_GetSegmentGlobalTranslation Output)
+double * ViconSegment::setTranslation(ViconDataStreamSDK::CPP::Output_GetSegmentGlobalTranslation Output)
 {
-    //Number of segments currently represented/tracked by the vicon system
-    if(!Output.Occluded())
+    if(!Output.Occluded)
     { 
-        X_Y_Z = Output.Translation();
+        X_Y_Z = Output.Translation;
     }
     return X_Y_Z;
 }
 
-double * ViconSegment::setOrientationEuler(Output_GetSegmentGlobalRotationEulerXYZ Output)
+double * ViconSegment::setOrientationEuler(ViconDataStreamSDK::CPP::Output_GetSegmentGlobalRotationEulerXYZ Output)
 {
-    if(!Output.Occluded())
+    if(!Output.Occluded)
     {
-        phi_theta_psi = Output.Rotation();
+        phi_theta_psi = Output.Rotation;
     }
-    return 
+    return phi_theta_psi;
+}
+//getter mthods for array values
+double * ViconSegment::getTranslation()
+{
+    return X_Y_Z;
+}
+double * ViconSegment::getOrientationEuler()
+{
+    return phi_theta_psi;
 }
 //getter methods for individual components
 double ViconSegment::getX()
 { 
-    X_Y_Z = ViconSegment::getTranslation(); 
     return X_Y_Z[0];
 }
 double ViconSegment::getY()
 { 
-    X_Y_Z = ViconSegment::getTranslation();
     return X_Y_Z[1];
 }
 double ViconSegment::getZ()
 { 
-    X_Y_Z = ViconSegment::getTranslation(); 
     return X_Y_Z[2];
 }
 double ViconSegment::getPhi()
 {
-    phi_theta_psi = ViconSegment::getOrientationEuler();
     return phi_theta_psi[0];
 }
 double ViconSegment::getTheta()
 {
-    phi_theta_psi = ViconSegment::getOrientationEuler();
     return phi_theta_psi[1];
 }
 double ViconSegment::getPsi()
 {
-    phi_theta_psi = ViconSegment::getOrientationEuler();
     return phi_theta_psi[2];
 }
-String & getSubjectName()
-{
+std::string ViconSegment::getSubjectName(){
     return SubjectName;
 }
-String & getSegmentName()
-{
+std::string ViconSegment::getSegmentName(){
     return SegmentName;
 }

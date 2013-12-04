@@ -4,11 +4,11 @@ using namespace ViconDataStreamSDK::CPP;
 
 
 
-ViconInputClient::ViconInputClient(const char * hostname, std::string * SubjectNames, std::string *SegmentNames, unsigned int bodyCount)
+ViconInputClient::ViconInputClient(const char * hostname, std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
 {
 	
 	ViconInputClient::hostname = hostname;
-	ViconAddSolidBody(SubjectNames,SegmentNames,bodyCount);
+	viconAddSolidBody(SubjectNames,SegmentNames);
 	viconInit();
 }
 
@@ -40,7 +40,7 @@ namespace
 		}
 	}
 
-	std::string Adapt( const DeviceType::Enum i_DeviceType )
+	/*std::string Adapt( const DeviceType::Enum i_DeviceType )
 	{
 		switch( i_DeviceType )
 		{
@@ -131,16 +131,23 @@ namespace
 			default:
 				return "Unknown";
 		}
-	}
+	}*/
 }
 
-ViconSegment * ViconInputClient::ViconAddSolidBody(std::string * SubjectNames, std::string * SegmentName, unsigned int bodyCount);
+std::vector<ViconSegment> ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
 {
-	
-	ViconInputClient::
-	for(int bodyIndex = 0; bodyIndex < bodyCount; bodyIndex++ )
+	std::vector<std::string>::iterator iterSub;
+	std::vector<std::string>::iterator iterSeg;
+	for( iterSub = SubjectNames.begin(), 
+		 iterSeg = SegmentNames.begin();
+
+		iterSub != SubjectNames.end() || 
+		iterSeg != SegmentNames.end();
+
+		++iterSub, 
+		++iterSeg )
 	{
-		solidBodys.push_back(new ViconSegment(subject_0,segment_0,&MyClient));
+		solidBodys.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
 	}
 	return solidBodys;
 }
@@ -233,40 +240,18 @@ void ViconInputClient::viconInit()
 
 void ViconInputClient::viconUpdate()
 {
-	std::string SubjectName;
-	std::string SegmentName;
-	unsigned int SubjectCount;
-	unsigned int SegmentCount;
-	unsigned int SubjectIndex;
-	unsigned int SegmentIndex;
 
-	while(MyClient.GetFrame().Result != Result::Success) 
+	/*while(MyClient.GetFrame().Result != Result::Success) 
 	{
 		sleep(1);
 		std::cout(".");
-	}
-	SubjectCount = MyClient.GetSubjectCount().SubjectCount;
-	/* TODO: bjnix at mtu dot edu | 11.13.2013
-		make sure to change this to accept vector input 
-	*/
+	}*/
+	
 	for(std::vector<ViconSegment>::iterator iter = solidBodys.begin() ; iter != solidBodys.end(); ++iter )
 	{
-		iter.setTranslation(MyClient.GetSegmentGlobalTranslation(iter.getSubjectName,iter.getSegmentName);
-	    SegmentCount = MyClient.GetSegmentCount( SubjectName ).SegmentCount;
+		*iter->setTranslation(MyClient.GetSegmentGlobalTranslation(iter->getSubjectName(),iter->getSegmentName()));
+		*iter->setOrientationEuler(MyClient.GetSegmentGlobalRotationEulerXYZ(iter->getSubjectName(),iter->getSegmentName()));
 
-	    for(SegmentIndex = 0; SegmentIndex < SegmentCount; SegmentIndex)
-		{
-			SegmentName = MyClient.GetSegmentName( SubjectName, SegmentIndex).SegmentName;
-
-			Output_GetSegmentGlobalTranslation _Output_GlobalTranslation = MyClient.GetSegmentGlobalTranslation(SubjectName, SegmentName);
-			Output_GetSegmentGlobalRotationEulerXYZ _Output_GlobalRotationEuler = MyClient.GetSegmentGlobalRotationEulerXYZ(SubjectName, SegmentName);
-			//Output_GetSegmentGlobalRotationHelical _Output_GlobalRotationHelical = MyClient.GetSegmentGlobalRotationHelical(SubjectName, SegmentName);
-			//Output_GetSegmentGlobalRotationMatrix _Output_GlobalRotationMatrix = MyClient.GetSegmentGlobalRotationMatrix(SubjectName, SegmentName);
-			//Output_GetSegmentGlobalRotationQuaternion _Output_GlobalRotationQuaternion = MyClient.GetSegmentGlobalRotationQuaternion(SubjectName, SegmentName);
-			
-
-
-		}
 	}
 
 }
@@ -285,7 +270,8 @@ void ViconInputClient::exitCallback()
 *	@param *segment is a pointer to a ViconSegment, which we will print.
 *	
 */
-void ViconInputClient::printViconData(ViconSegment *segment){
+void ViconInputClient::printViconData(ViconSegment *segment)
+{
 		double * tester = segment->getTranslation();
 		//segment->printSubjectName();
 		//std::cout << "Translation Data:" << std::endl;

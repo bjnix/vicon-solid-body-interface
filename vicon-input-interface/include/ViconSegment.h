@@ -8,15 +8,14 @@ class ViconSegment
   private:
     double * X_Y_Z;
     double * phi_theta_psi;
-    //const char * SegmentName;
-    //const char * SubjectName;
-    const String & SubjectName;
-    const String & SegmentName;
-
-    ViconDataStreamSDK::CPP::Client *SegClient;
+    std::string SegmentName;
+    std::string SubjectName;
+    ViconDataStreamSDK::CPP::Client * segClient;
   public:
-    double * setTranslation();
-    double * setOrientationEuler();
+    double * setTranslation(ViconDataStreamSDK::CPP::Output_GetSegmentGlobalTranslation);
+    double * setOrientationEuler(ViconDataStreamSDK::CPP::Output_GetSegmentGlobalRotationEulerXYZ);
+    double * getTranslation();
+    double * getOrientationEuler();
     double getX();
     double getY();
     double getZ();
@@ -24,12 +23,12 @@ class ViconSegment
     double getTheta();
     double getPsi(); 
 
-    getSubjectName();
-    getSegmentName();
+    //TODO add printing or preferably return a string
+    std::string getSubjectName();
+    std::string getSegmentName();
+    //void printSegmentName();
 
-    ViconSegment(const String & SubjectName, const String & SegmentName, ViconDataStreamSDK::CPP::Client *SegClient);
-
-    //ViconSegment(const char * SubjectName, const char * SegmentName, ViconDataStreamSDK::CPP::Client *SegClient);
+    ViconSegment(std::string SubjectName, std::string SegmentName, ViconDataStreamSDK::CPP::Client *SegClient);
     //~ViconSegment();
 
 
