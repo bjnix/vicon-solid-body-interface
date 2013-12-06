@@ -241,13 +241,13 @@ void ViconInputClient::viconInit()
 void ViconInputClient::viconUpdate()
 {
 
-	/*while(MyClient.GetFrame().Result != Result::Success) 
+	while(MyClient.GetFrame().Result != Result::Success) 
 	{
 		sleep(1);
-		std::cout(".");
-	}*/
-	
-	for(std::vector<ViconSegment>::iterator iter = solidBodys.begin() ; iter != solidBodys.end(); ++iter )
+		std::cout << ".";
+	}
+	std::cout << std::endl;
+ 	for(std::vector<ViconSegment>::iterator iter = solidBodys.begin() ; iter != solidBodys.end(); ++iter )
 	{
 		*iter->setTranslation(MyClient.GetSegmentGlobalTranslation(iter->getSubjectName(),iter->getSegmentName()));
 		*iter->setOrientationEuler(MyClient.GetSegmentGlobalRotationEulerXYZ(iter->getSubjectName(),iter->getSegmentName()));
@@ -272,10 +272,9 @@ void ViconInputClient::exitCallback()
 */
 void ViconInputClient::printViconData(ViconSegment *segment)
 {
-		double * tester = segment->getTranslation();
-		//segment->printSubjectName();
-		//std::cout << "Translation Data:" << std::endl;
-		//std::cout << "( " << ", " << tester[0]/1000/2 << ", " << segment->getY()/1000/2 << ", " << segment->getZ()/1000/2 << " )" << std::endl;
+		std::cout << "Translation Data:" << std::endl;
+		std::cout << "( " << ", " << segment->getX()/1000/2 << ", " << segment->getY()/1000/2 << ", " << segment->getZ()/1000/2 << " )" << std::endl;
+		std::cout << "( " << ", " << segment->getPhi()/1000/2 << ", " << segment->getTheta()/1000/2 << ", " << segment->getPsi()/1000/2 << " )" << std::endl;
 		//X is left/right
 		//Y is forwards and backwards
 		//Z is	up/down.

@@ -23,10 +23,9 @@ class ViconSegment
     double getTheta();
     double getPsi(); 
 
-    //TODO add printing or preferably return a string
+    
     std::string getSubjectName();
     std::string getSegmentName();
-    //void printSegmentName();
 
     ViconSegment(std::string SubjectName, std::string SegmentName, ViconDataStreamSDK::CPP::Client *SegClient);
     //~ViconSegment();
