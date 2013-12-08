@@ -16,14 +16,15 @@ class ViconInputClient
 {
 	private:
 	const char * hostname;
-    	void viconInit();
-    	std::vector<ViconSegment> solidBodys;
-	std::vector<ViconSegment> viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames);
+    void viconInit();
+    std::vector<ViconSegment> solidBodys;
+	void viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames);
     
 	public:
 	//void exitCallback(void);
 	ViconDataStreamSDK::CPP::Client MyClient; //may cause collisions later if making multiple clients
 
+	std::vector<ViconSegment> viconGetSolidBodys();
 	void viconExit();
 	void viconUpdate();	
 	void printViconData(ViconSegment * segment);

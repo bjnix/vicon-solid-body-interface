@@ -133,7 +133,10 @@ namespace
 		}
 	}*/
 }
-
+std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
+{
+	return solidBodys;
+}
 std::vector<ViconSegment> ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
 {
 	std::vector<std::string>::iterator iterSub;
