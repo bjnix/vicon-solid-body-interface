@@ -133,49 +133,6 @@ namespace
 		}
 	}*/
 }
-std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
-{
-	return solidBodys;
-}
-std::vector<ViconSegment> ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
-{
-	std::vector<std::string>::iterator iterSub;
-	std::vector<std::string>::iterator iterSeg;
-	for( iterSub = SubjectNames.begin(), 
-		 iterSeg = SegmentNames.begin();
-
-		iterSub != SubjectNames.end() || 
-		iterSeg != SegmentNames.end();
-
-		++iterSub, 
-		++iterSeg )
-	{
-		solidBodys.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
-	}
-	return solidBodys;
-}
-
-void ViconInputClient::viconExit()
-{
-    MyClient.DisableSegmentData();
-//    MyClient.DisableMarkerData();
-//    MyClient.DisableUnlabeledMarkerData();
-//    MyClient.DisableDeviceData();
-
-	// TODO: Disconnect seems to cause a hang. -Scott Kuhl
-    // Disconnect and dispose
-    int t = clock();
-    std::cout << " Disconnecting..." << std::endl;
-    MyClient.Disconnect();
-    int dt = clock() - t;
-    double secs = (double) (dt)/(double)CLOCKS_PER_SEC;
-    std::cout << " Disconnect time = " << secs << " secs" << std::endl;
-}
-/**
- * viconInit
- * Method called to start vicon server
- *
- */
 void ViconInputClient::viconInit()
 {
     // Connect to a server
@@ -237,6 +194,49 @@ void ViconInputClient::viconInit()
 			  << _Output_GetVersion.Point << std::endl;
 
 }
+void ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
+{
+	std::vector<std::string>::iterator iterSub;
+	std::vector<std::string>::iterator iterSeg;
+	for( iterSub = SubjectNames.begin(), 
+		 iterSeg = SegmentNames.begin();
+
+		iterSub != SubjectNames.end() || 
+		iterSeg != SegmentNames.end();
+
+		++iterSub, 
+		++iterSeg )
+	{
+		solidBodys.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
+	}
+	return solidBodys;
+}
+std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
+{
+	return solidBodys;
+}
+void ViconInputClient::viconExit()
+{
+    MyClient.DisableSegmentData();
+//    MyClient.DisableMarkerData();
+//    MyClient.DisableUnlabeledMarkerData();
+//    MyClient.DisableDeviceData();
+
+	// TODO: Disconnect seems to cause a hang. -Scott Kuhl
+    // Disconnect and dispose
+    int t = clock();
+    std::cout << " Disconnecting..." << std::endl;
+    MyClient.Disconnect();
+    int dt = clock() - t;
+    double secs = (double) (dt)/(double)CLOCKS_PER_SEC;
+    std::cout << " Disconnect time = " << secs << " secs" << std::endl;
+}
+/**
+ * viconInit
+ * Method called to start vicon server
+ *
+ */
+
 /* TODO: bjnix at mtu dot edu | 11.13.2013
 	hide update process from user to clean things up
 */
