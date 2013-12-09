@@ -207,12 +207,12 @@ void ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, 
 		++iterSub, 
 		++iterSeg )
 	{
-		solidBodys.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
+		solidBodies.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
 	}
 }
 std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
 {
-	return solidBodys;
+	return solidBodies;
 }
 void ViconInputClient::viconExit()
 {
@@ -249,7 +249,7 @@ void ViconInputClient::viconUpdate()
 		std::cout << ".";
 	}
 	std::cout << std::endl;
- 	for(std::vector<ViconSegment>::iterator iter = solidBodys.begin() ; iter != solidBodys.end(); ++iter )
+ 	for(std::vector<ViconSegment>::iterator iter = solidBodies.begin() ; iter != solidBodies.end(); ++iter )
 	{
 		*iter->setTranslation(MyClient.GetSegmentGlobalTranslation(iter->getSubjectName(),iter->getSegmentName()));
 		*iter->setOrientationEuler(MyClient.GetSegmentGlobalRotationEulerXYZ(iter->getSubjectName(),iter->getSegmentName()));
