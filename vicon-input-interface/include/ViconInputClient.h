@@ -15,10 +15,10 @@
 class ViconInputClient
 {
 	private:
-	const char * hostname;
+	std::string * hostname;
     void viconInit();
     std::vector<ViconSegment> solidBodies;
-	void viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames);
+	void viconAddSolidBody(std::vector<std::string> * SubjectNames, std::vector<std::string> * SegmentNames);
     
 	public:
 	//void exitCallback(void);
@@ -29,6 +29,6 @@ class ViconInputClient
 	void viconUpdate();	
 	void printViconData(ViconSegment * segment);
 
-	ViconInputClient(const char * hostname, std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames);
+	ViconInputClient(std::string * hostname, std::vector<std::string> * SubjectNames, std::vector<std::string> * SegmentNames);
 };
 #endif

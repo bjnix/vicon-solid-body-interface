@@ -4,7 +4,7 @@ using namespace ViconDataStreamSDK::CPP;
 
 
 
-ViconInputClient::ViconInputClient(const char * hostname, std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
+ViconInputClient::ViconInputClient(std::string * hostname, std::vector<std::string> * SubjectNames, std::vector<std::string> * SegmentNames)
 {
 	
 	ViconInputClient::hostname = hostname;
@@ -194,20 +194,20 @@ void ViconInputClient::viconInit()
 			  << _Output_GetVersion.Point << std::endl;
 
 }
-void ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, std::vector<std::string> SegmentNames)
+void ViconInputClient::viconAddSolidBody(std::vector<std::string> * SubjectNames, std::vector<std::string> * SegmentNames)
 {
 	std::vector<std::string>::iterator iterSub;
 	std::vector<std::string>::iterator iterSeg;
-	for( iterSub = SubjectNames.begin(), 
-		 iterSeg = SegmentNames.begin();
+	for( iterSub = SubjectNames->begin(), 
+		 iterSeg = SegmentNames->begin();
 
-		iterSub != SubjectNames.end() || 
-		iterSeg != SegmentNames.end();
+		iterSub != SubjectNames->end() || 
+		iterSeg != SegmentNames->end();
 
 		++iterSub, 
 		++iterSeg )
 	{
-		solidBodies.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
+		solidBodies->push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
 	}
 }
 std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
