@@ -209,7 +209,6 @@ void ViconInputClient::viconAddSolidBody(std::vector<std::string> SubjectNames, 
 	{
 		solidBodys.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
 	}
-	return solidBodys;
 }
 std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
 {
