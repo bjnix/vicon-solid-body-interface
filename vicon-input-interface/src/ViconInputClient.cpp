@@ -136,7 +136,7 @@ namespace
 void ViconInputClient::Init()
 {
     // Connect to a server
-    std::cout << "Connecting to " << this->hostname << " ..." << std::flush;
+    std::cout << "Connecting to " << this->hostname->c_str() << " ..." << std::flush;
 	int attemptConnectCount = 0;
 	const int MAX_CONNECT_ATTEMPTS=2;
     while( !MyClient.IsConnected().Connected && attemptConnectCount < MAX_CONNECT_ATTEMPTS)

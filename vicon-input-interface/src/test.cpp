@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-std::string HostName = "141.219.28.17:801";//was 141.219.28.107:801
+std::string HostName = "141.219.28.17:801";
 
 template<typename T, size_t N>
 T * end(T (&ra)[N]) {
