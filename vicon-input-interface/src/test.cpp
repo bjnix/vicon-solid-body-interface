@@ -1,14 +1,35 @@
 #include "ViconInputClient.h"
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+std::string HostName = "141.219.28.17:801";//was 141.219.28.107:801
+
+template<typename T, size_t N>
+T * end(T (&ra)[N]) {
+    return ra + N;
+}
+const char *nameList[] = {
+	"HandL",
+	"HandR",
+	"FootL",
+	"FootR"
+	};
+
+std::vector<std::string> names(nameList,end(nameList));
+//std::vector<std::string> * names_p = &names;
+ViconInputClient * vClient;
+
 int main()
 {
-    ViconInputClient * vClient1 = new ViconInputClient("141.219.28.17:801");
     
+    vClient = new ViconInputClient(&HostName,&names,&names);
 
-    ViconSegment * mySeg = new ViconSegment("Wand","Wand",&vClient1->MyClient);
-    double n = mySeg->getX();
-    std::cout << n << std::endl;
+    ViconSegment mySeg = (vClient->GetRigidBodies())[0];
+    double n = mySeg.getX();
+    std::cout<< "X translation: " << n <<std::endl;
+ 
+    vClient->printViconData();
 
-    delete mySeg;
-	vClient1->viconExit();
+    vClient->Exit();
 }

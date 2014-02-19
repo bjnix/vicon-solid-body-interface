@@ -136,14 +136,14 @@ namespace
 void ViconInputClient::Init()
 {
     // Connect to a server
-    std::cout << "Connecting to " << ViconInputClient::hostname << " ..." << std::flush;
+    std::cout << "Connecting to " << this->hostname << " ..." << std::flush;
 	int attemptConnectCount = 0;
 	const int MAX_CONNECT_ATTEMPTS=2;
     while( !MyClient.IsConnected().Connected && attemptConnectCount < MAX_CONNECT_ATTEMPTS)
     {
 		attemptConnectCount++;
 		bool ok = false;
-		ok =( MyClient.Connect( ViconInputClient::hostname ).Result == Result::Success );
+		ok =( MyClient.Connect( *this->hostname ).Result == Result::Success );
 		if(!ok)
 			std::cout << "Warning - connect failed..." << std::endl;
 		std::cout << ".";
@@ -207,13 +207,13 @@ void ViconInputClient::AddSolidBody(std::vector<std::string> * SubjectNames, std
 		++iterSub, 
 		++iterSeg )
 	{
-		solidBodies->push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
+		rigidBodies.push_back(ViconSegment(*iterSub,*iterSeg,&MyClient));
 	}
 }
-std::vector<ViconSegment> ViconInputClient::viconGetSolidBodies()
+std::vector<ViconSegment> ViconInputClient::GetRigidBodies()
 {
 	Update();
-	return solidBodies;
+	return rigidBodies;
 }
 void ViconInputClient::Exit()
 {
@@ -249,8 +249,8 @@ void ViconInputClient::Update()
 		sleep(1);
 		std::cout << ".";
 	}
-	std::cout << std::endl;
- 	for(std::vector<ViconSegment>::iterator iter = solidBodies.begin() ; iter != solidBodies.end(); ++iter )
+	std::cout << std::flush;
+ 	for(std::vector<ViconSegment>::iterator iter = rigidBodies.begin() ; iter != rigidBodies.end(); ++iter )
 	{
 		*iter->setTranslation(MyClient.GetSegmentGlobalTranslation(iter->getSubjectName(),iter->getSegmentName()));
 		*iter->setOrientationEuler(MyClient.GetSegmentGlobalRotationEulerXYZ(iter->getSubjectName(),iter->getSegmentName()));
@@ -275,12 +275,12 @@ void ViconInputClient::exitCallback()
 */
 void ViconInputClient::printViconData()
 {
-	for(std::vector<ViconSegment>::iterator segment = solidBodies.begin() ; segment != solidBodies.end(); ++iter )
+	for(std::vector<ViconSegment>::iterator segment = rigidBodies.begin() ; segment != rigidBodies.end(); ++segment)
 	{
 		std::cout << "-------------------------------------------------" << std::endl;
-		std::cout << *segment->getSubjectName() << "_" << *segment->getSegmentName() << std::endl;
-		std::cout <<"( " << ", " << *segment->getX()/1000/2 << ", " << *segment->getY()/1000/2 << ", " << *segment->getZ()/1000/2 << " )" << std::endl;
-		std::cout << "( " << ", " << *segment->getPhi()/1000/2 << ", " << *segment->getTheta()/1000/2 << ", " << *segment->getPsi()/1000/2 << " )" << std::endl;
+		std::cout << segment->getSubjectName() << "_" << segment->getSegmentName() << std::endl;
+		std::cout <<"( " << ", " << segment->getX()/1000/2 << ", " << segment->getY()/1000/2 << ", " << segment->getZ()/1000/2 << " )" << std::endl;
+		std::cout << "( " << ", " << segment->getPhi()/1000/2 << ", " << segment->getTheta()/1000/2 << ", " << segment->getPsi()/1000/2 << " )" << std::endl;
 		//X is left/right
 		//Y is forwards and backwards
 		//Z is	up/down.
